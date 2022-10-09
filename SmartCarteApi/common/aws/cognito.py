@@ -4,6 +4,16 @@ from django.conf import settings
 from SmartCarteApi.common.aws import exceptions, get_boto_client
 
 
+def confirm_account(email):
+
+    client = get_boto_client('cognito-idp')
+
+    client.admin_confirm_sign_up(
+        UserPoolId=settings.COGNITO_USERPOOL_ID,
+        Username=email
+    )
+
+
 def create_user(email, password, method="email"):
 
     client = get_boto_client('cognito-idp')

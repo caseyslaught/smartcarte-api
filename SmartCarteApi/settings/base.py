@@ -3,13 +3,13 @@ import os
 from pathlib import Path
 
 
-AWS_ACCESS_KEY_ID = "" #os.environ['SMARTCARTE_AWS_KEY']
-AWS_SECRET_ACCESS_KEY = "" #os.environ['SMARTCARTE_AWS_SECRET']
-AWS_ACCOUNT_ID = "" #os.environ['SMARTCARTE_AWS_ACCOUNT_ID']
+AWS_ACCESS_KEY_ID = os.environ['SMARTCARTE_AWS_KEY']
+AWS_SECRET_ACCESS_KEY = os.environ['SMARTCARTE_AWS_SECRET']
+AWS_ACCOUNT_ID = os.environ['SMARTCARTE_AWS_ACCOUNT_ID']
 AWS_REGION = "us-east-1"
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-SECRET_KEY = "asdf" # os.environ['SMARTCARTE_SECRET']
+SECRET_KEY = os.environ['SMARTCARTE_SECRET']
 
 INSTALLED_APPS = [
     'django.contrib.admin',

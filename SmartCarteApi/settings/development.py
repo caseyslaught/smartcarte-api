@@ -3,8 +3,8 @@ from SmartCarteApi.settings.base import *
 # AWS
 
 COGNITO_USERPOOL_NAME = "smartcarte-development"
-COGNITO_USERPOOL_ID = "" #os.environ['SMARTCARTE_DEV_COGNITO_USERPOOL_ID']
-COGNITO_APP_ID = "" #os.environ['SMARTCARTE_DEV_COGNITO_APP_ID']
+COGNITO_USERPOOL_ID = os.environ['SMARTCARTE_DEV_COGNITO_USERPOOL_ID']
+COGNITO_APP_ID = os.environ['SMARTCARTE_DEV_COGNITO_APP_ID']
 
 
 # Django

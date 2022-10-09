@@ -24,7 +24,7 @@ class CognitoAuthentication(BaseAuthentication):
 
         # verify uid or username exists (both same in Cognito)
 
-        # It is required to pass algorithms when calling decode...
+        # must use PyJWT==1.7.1
         unverified_payload = jwt.decode(jwt_value, None, False)
         uid = unverified_payload.get('sub', unverified_payload.get('username', None))
         if uid is None:
