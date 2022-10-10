@@ -3,15 +3,15 @@ from SmartCarteApi.settings.base import *
 # AWS
 
 COGNITO_USERPOOL_NAME = "smartcarte-production"
-COGNITO_USERPOOL_ID = "" #os.environ['SMARTCARTE_PROD_COGNITO_USERPOOL_ID']
-COGNITO_APP_ID = "" #os.environ['SMARTCARTE_PROD_COGNITO_APP_ID']
+COGNITO_USERPOOL_ID = os.environ['SMARTCARTE_PROD_COGNITO_USERPOOL_ID']
+COGNITO_APP_ID = os.environ['SMARTCARTE_PROD_COGNITO_APP_ID']
 
 
 # Django
 
 ALLOWED_HOSTS = [
     'api.smartcarte.earth',
-    'something.eleasticbeanstalk.com'
+    'production.eba-z8hjn4dp.eu-central-1.elasticbeanstalk.com'
 ]
 DEBUG = False
 STAGE = 'production'
@@ -21,9 +21,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': DATABASE_NAME,
-        'USER': os.environ['LOCAL_MYSQL_USER'],
-        'PASSWORD': os.environ['LOCAL_MYSQL_PASSWORD'],
-        'HOST': os.environ['LOCAL_MYSQL_HOST'],
+        'USER': os.environ['SMARTCARTE_MYSQL_USER'],
+        'PASSWORD': os.environ['SMARTCARTE_MYSQL_PASSWORD'],
+        'HOST': os.environ['SMARTCARTE_MYSQL_HOST'],
         'PORT': '3306',
     },
     'OPTIONS': {
