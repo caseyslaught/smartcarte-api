@@ -8,6 +8,18 @@ from SmartCarteApi.common.aws import cognito, exceptions
 from SmartCarteApi.common.authentication import CognitoAuthentication
 
 
+class AuthTestView(generics.GenericAPIView):
+
+    authentication_classes = [CognitoAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self):
+        return Response(status=status.HTTP_200_OK)
+
+    def post(self):
+        return Response(status=status.HTTP_200_OK)
+
+
 class LoginView(generics.GenericAPIView):
 
     authentication_classes = []

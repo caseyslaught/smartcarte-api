@@ -22,7 +22,7 @@ class RegisterView(generics.GenericAPIView):
         password = data['password']
         first_name = data.get('first_name')
         last_name = data.get('last_name')
-        organization_name = data['organization_name']
+        organization_name = data.get('organization_name', "")
 
         organization = Organization.objects.create(name=organization_name)
 
@@ -38,10 +38,16 @@ class RegisterView(generics.GenericAPIView):
                 is_admin=True)
         except (IntegrityError, exceptions.UsernameExistsException):
             organization.delete()
-            return Response({'error': 'email_already_exists'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'error': 'email_already_exists',
+                'message': 'This email already exists.'
+                }, status=status.HTTP_400_BAD_REQUEST)
         except (exceptions.ParamValidationError, exceptions.InvalidParameterException):
             organization.delete()
-            return Response({'error': 'invalid_parameter'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'error': 'invalid_parameter',
+                'message': 'Invalid parameter.'
+                }, status=status.HTTP_400_BAD_REQUEST)
 
         tokens = cognito.sign_in(email, password)
 

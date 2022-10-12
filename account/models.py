@@ -14,7 +14,7 @@ class Organization(models.Model):
     datetime_deleted = models.DateTimeField(null=True)
     is_active = models.BooleanField(default=True) # set true if deleted
 
-    name = models.CharField(max_length=120)
+    name = models.CharField(max_length=120, blank=True, default="")
 
     class Meta:
         ordering = ['name']
