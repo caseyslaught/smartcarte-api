@@ -76,3 +76,22 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Region(models.Model):
+    uid = models.UUIDField(unique=True, editable=False, default=uuid.uuid4)
+    datetime_created = models.DateTimeField(default=get_utc_datetime_now)
+    datetime_updated = models.DateTimeField(null=True)
+    datetime_deleted = models.DateTimeField(null=True)
+
+    name = models.CharField(max_length=200, blank=True, null=True)
+    geojson = models.TextField()
+
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='regions')
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='regions')
+
+    def __str__(self):
+        return self.name
+
+
+

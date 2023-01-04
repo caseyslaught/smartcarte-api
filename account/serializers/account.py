@@ -2,6 +2,7 @@
 from rest_framework import serializers
 
 from SmartCarteApi.common.fields import CaseInsensitiveEmailField
+from account.models import Region
 
 
 
@@ -14,3 +15,14 @@ class RegisterSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=120, required=False)
     last_name = serializers.CharField(max_length=120, required=False)
 
+
+
+class GetRegionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Region
+        fields = [
+            'uid',
+            'name',
+            'geojson'
+        ]

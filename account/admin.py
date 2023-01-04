@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from account.models import Account, Organization
+from account.models import Account, Organization, Region
 
 
 
@@ -16,6 +16,16 @@ class AccountAdmin(admin.ModelAdmin):
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ['uid', 'name', 'datetime_created']
+    search_fields = ['name']
+    list_filter = []
+    ordering = ['-datetime_created']
+    readonly_fields = ['datetime_created', 'datetime_deleted', 'datetime_updated']
+
+
+
+@admin.register(Region)
+class RegionAdmin(admin.ModelAdmin):
+    list_display = ['uid', 'name']
     search_fields = ['name']
     list_filter = []
     ordering = ['-datetime_created']
