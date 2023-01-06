@@ -35,12 +35,18 @@ class GetForestChangeTaskParamsView(generics.GenericAPIView):
         except (ForestChangeTask.DoesNotExist, ValidationError):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        try:
+            geojson = json.loads(task.region.geojson)
+        except json.decoder.JSONDecodeError:
+            return Response({'error': 'json_decode_error'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
         return Response({
             'start_date': task.start_date,
             'end_date': task.end_date,
             'region': {
                 'name': task.region.name,
-                'geojson': json.loads(task.region.geojson)
+                'geojson': geojson
             }
         }, status=status.HTTP_200_OK)
+
 

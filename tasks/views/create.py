@@ -2,8 +2,6 @@ from rest_framework import permissions, status, generics, views
 from rest_framework.response import Response
 
 from SmartCarteApi.common.authentication import CognitoAuthentication
-from tasks.serializers import create as serializer
-
 from tasks.models import ForestChangeTask
 from tasks.serializers import create as serializers
 
