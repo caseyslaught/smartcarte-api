@@ -18,6 +18,9 @@ class CreateForestChangeTaskView(generics.GenericAPIView):
 
         data = serializer.data
 
+        # 1. create the task in the database
+        # 2. start an ECS Fargate task
+
         return Response(status=status.HTTP_201_CREATED)
 
 

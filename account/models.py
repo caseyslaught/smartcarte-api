@@ -3,7 +3,7 @@ from django.db import models
 import uuid
 
 from SmartCarteApi.common import get_utc_datetime_now
-from SmartCarteApi.common.aws import cognito
+from SmartCarteApi.common.aws import cognito, exceptions
 
 
 class Organization(models.Model):
@@ -40,7 +40,12 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email).lower()
         account = self.model(email=email, **extra_fields)
 
-        uid_cognito = cognito.create_user(email, password, method="superuser")
+        try:
+            uid_cognito = cognito.create_user(email, password, method="superuser")
+        except exceptions.UsernameExistsException:
+            print("User already exists in Cognito but just added to database.")
+            uid_cognito = cognito.get_uid_cognito(email)
+        
         account.uid_cognito = uid_cognito
         account.set_password(password)
         account.save(using=self._db)

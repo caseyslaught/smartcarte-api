@@ -102,6 +102,22 @@ def get_is_email_verified(email):
     return is_email_verified
 
 
+def get_uid_cognito(email):
+
+    client = get_boto_client('cognito-idp')
+
+    cognito_response = client.admin_get_user(
+        UserPoolId=settings.COGNITO_USERPOOL_ID,
+        Username=email
+    )
+
+    for attr in cognito_response['UserAttributes']:
+        if attr['Name'] == 'sub':
+            return attr['Value']
+
+    raise ValueError("Attribute matching sub not found.")
+
+
 def refresh(refresh_token):
 
     client = get_boto_client('cognito-idp')

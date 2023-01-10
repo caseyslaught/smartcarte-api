@@ -10,9 +10,10 @@ class BaseTask(models.Model):
     
     uid = models.UUIDField(unique=True, editable=False, default=uuid.uuid4)
     datetime_created = models.DateTimeField(default=get_utc_datetime_now)
+    datetime_completed = models.DateTimeField(null=True)
     datetime_updated = models.DateTimeField(null=True)
 
-    status = models.CharField(max_length=20) # TODO: setup choices: canceled, running, complete    
+    status = models.CharField(max_length=20)  
 
     class Meta:
         abstract = True
