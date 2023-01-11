@@ -2,7 +2,7 @@
 from rest_framework import serializers
 
 from SmartCarteApi.common.fields import CaseInsensitiveEmailField
-from account.models import Region
+from account.models import Region, Waitlist
 
 
 
@@ -25,4 +25,20 @@ class GetRegionSerializer(serializers.ModelSerializer):
             'uid',
             'name',
             'geojson'
+        ]
+
+
+
+class WaitlistSignupSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Waitlist
+        fields = [
+            'first_name',
+            'last_name',
+            'email',
+            'industry',
+            'reason',
+            'role',
+            'message',
         ]

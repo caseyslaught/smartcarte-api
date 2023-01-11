@@ -15,6 +15,8 @@ class BaseTask(models.Model):
 
     status = models.CharField(max_length=20)  
 
+    # TODO: add failure message
+
     class Meta:
         abstract = True
 

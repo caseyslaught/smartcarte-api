@@ -10,5 +10,6 @@ urlpatterns = [
     path('logout/', tokens.LogoutView.as_view()),
     path('refresh/', tokens.RefreshView.as_view()),
     path('register/', account.RegisterView.as_view()),
+    path('waitlist_signup/', account.WaitlistSignupView.as_view()),
 
 ]

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from account.models import Account, Organization, Region
+from account.models import Account, Organization, Region, Waitlist
 
 
 
@@ -22,7 +22,6 @@ class OrganizationAdmin(admin.ModelAdmin):
     readonly_fields = ['datetime_created', 'datetime_deleted', 'datetime_updated']
 
 
-
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
     list_display = ['uid', 'name']
@@ -30,4 +29,13 @@ class RegionAdmin(admin.ModelAdmin):
     list_filter = []
     ordering = ['-datetime_created']
     readonly_fields = ['datetime_created', 'datetime_deleted', 'datetime_updated']
+
+
+@admin.register(Waitlist)
+class WaitlistAdmin(admin.ModelAdmin):
+    list_display = ['uid', 'email', 'first_name', 'last_name', 'industry', 'reason']
+    search_fields = ['email', 'first_name', 'last_name']
+    list_filter = []
+    ordering = ['-datetime_created']
+    readonly_fields = ['datetime_created']
 

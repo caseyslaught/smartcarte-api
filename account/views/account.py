@@ -2,7 +2,7 @@ from django.db import IntegrityError
 from rest_framework import permissions, status, generics, views
 from rest_framework.response import Response
 
-from account.models import Account, Organization
+from account.models import Account, Organization, Waitlist
 from account.serializers import account as serializers
 from SmartCarteApi.common.aws import cognito, exceptions
 
@@ -57,4 +57,20 @@ class RegisterView(generics.GenericAPIView):
             'refresh_token': tokens['refresh_token']
         }, status=status.HTTP_201_CREATED)
 
+
+
+class WaitlistSignupView(generics.GenericAPIView):
+
+    authentication_classes = []
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.WaitlistSignupSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        data = serializer.data
+        Waitlist.objects.create(**data)
+
+        return Response(status=status.HTTP_201_CREATED)
 

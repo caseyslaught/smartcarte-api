@@ -99,4 +99,16 @@ class Region(models.Model):
         return self.name
 
 
+class Waitlist(models.Model):
+    uid = models.UUIDField(unique=True, editable=False, default=uuid.uuid4)
+    datetime_created = models.DateTimeField(default=get_utc_datetime_now)
+
+    first_name = models.CharField(max_length=200, blank=True, null=True)
+    last_name = models.CharField(max_length=200, blank=True, null=True)
+    email = models.EmailField()
+
+    industry = models.CharField(max_length=100, blank=True, null=True) # conservation, agriculture, mining
+    reason = models.CharField(max_length=100, blank=True, null=True) # burn area, lulc, forest
+    role = models.CharField(max_length=100, blank=True, null=True) # researcher, press, pa manager
+    message = models.TextField(blank=True, null=True)
 
