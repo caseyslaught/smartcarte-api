@@ -13,9 +13,9 @@ class BaseTask(models.Model):
     datetime_completed = models.DateTimeField(null=True)
     datetime_updated = models.DateTimeField(null=True)
 
+    type = models.CharField(max_length=40, null=True) # burn_areas, forest_change, lulc_change, lulc_classification
     status = models.CharField(max_length=20)  
-
-    # TODO: add failure message
+    status_message = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -30,16 +30,12 @@ class ForestChangeTask(BaseTask):
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='forest_change_tasks')
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='forest_change_tasks')
 
-    # TODO: update results after consultation with JS
-
     gain_area = models.IntegerField(null=True) # m2
     loss_area = models.IntegerField(null=True)
     total_area = models.IntegerField(null=True) # total non-masked area
+    
+    # ex. https://data.smartcarte.com/.../rgb_byte_tiles/{z}/{y}/{x}.png
+    before_rgb_tiles_href = models.CharField(max_length=200, null=True) 
+    after_rgb_tiles_href = models.CharField(max_length=200, null=True)
+    change_tiles_href = models.CharField(max_length=200, null=True)
 
-
-
-#class BurnedAreasTask(BaseTask):
-#    pass
-
-#class LulcClassificationTask(BaseTask):
-#    pass

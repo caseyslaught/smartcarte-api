@@ -10,10 +10,13 @@ from tasks.serializers import update as serializers
 
 
 class UpdateForestChangeTaskResultsView(generics.GenericAPIView):
+    """
+    View for updating just forest change tasks.
+    """
 
     authentication_classes = []
     permission_classes = [permissions.AllowAny]
-    serializer_class = serializers.UpdateForestChangeTaskResultsSerializer
+    serializer_class = serializers.UpdateForestChangeTaskSerializer
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -28,15 +31,21 @@ class UpdateForestChangeTaskResultsView(generics.GenericAPIView):
             return Response({'error': 'task_not_found'}, status=status.HTTP_400_BAD_REQUEST)
 
         task.datetime_updated = get_utc_datetime_now()
-        task.total_area = data['total_area']
-        task.gain_area = data['gain_area']
-        task.loss_area = data['loss_area']
+        task.total_area = data.get('total_area', task.total_area)
+        task.gain_area = data.get('gain_area', task.gain_area)
+        task.loss_area = data.get('loss_area', task.loss_area)
+        task.before_rgb_tiles_href = data.get('before_rgb_tiles_href', task.before_rgb_tiles_href)
+        task.after_rgb_tiles_href = data.get('after_rgb_tiles_href', task.after_rgb_tiles_href)
+        task.change_tiles_href = data.get('change_tiles_href', task.change_tiles_href)
         task.save()
 
         return Response(status=status.HTTP_200_OK)
 
 
 class UpdateTaskStatusView(generics.GenericAPIView):
+    """
+    View for updating the status of all types of tasks.
+    """
 
     authentication_classes = []
     permission_classes = [permissions.AllowAny]
@@ -50,6 +59,7 @@ class UpdateTaskStatusView(generics.GenericAPIView):
         task_uid = data['task_uid']
         task_type = data['task_type']
         new_task_status = data['status']
+        message = data.get('message', None)
 
         if task_type == "forest_change":
             TaskClass = ForestChangeTask
@@ -66,6 +76,7 @@ class UpdateTaskStatusView(generics.GenericAPIView):
 
         task.datetime_updated = get_utc_datetime_now()
         task.status = new_task_status
+        task.status_message = message
         task.save()
 
         return Response(status=status.HTTP_200_OK)

@@ -11,7 +11,7 @@ COGNITO_APP_ID = os.environ['SMARTCARTE_PROD_COGNITO_APP_ID']
 
 ALLOWED_HOSTS = [
     'api.smartcarte.earth',
-    'production.eba-z8hjn4dp.eu-central-1.elasticbeanstalk.com'
+    'production.eba-kapt8bmu.us-west-2.elasticbeanstalk.com'
 ]
 DEBUG = False
 STAGE = 'production'

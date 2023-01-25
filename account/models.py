@@ -42,6 +42,8 @@ class UserManager(BaseUserManager):
 
         try:
             uid_cognito = cognito.create_user(email, password, method="superuser")
+            cognito.confirm_account(email)
+            cognito.verify_email(email)
         except exceptions.UsernameExistsException:
             print("User already exists in Cognito but just added to database.")
             uid_cognito = cognito.get_uid_cognito(email)
@@ -51,6 +53,7 @@ class UserManager(BaseUserManager):
         account.save(using=self._db)
 
         return account
+
 
 
 class Account(AbstractBaseUser, PermissionsMixin):
