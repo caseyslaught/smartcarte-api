@@ -3,7 +3,6 @@ import os
 from SmartCarteApi.common.aws import get_boto_client
 
 
-# write a function that starts a Fargate task given a task definition name, and subnet ID
 
 def run_fargate_monolith_task(task):
 

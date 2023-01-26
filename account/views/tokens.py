@@ -26,7 +26,7 @@ class LoginView(generics.GenericAPIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = serializers.LoginSerializer
 
-    def post(self, request):
+    def post(self, request):       
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -36,7 +36,7 @@ class LoginView(generics.GenericAPIView):
         try:
             Account.objects.get(email=email, is_active=True)
             tokens = cognito.sign_in(email, password)
-
+            
         except (Account.DoesNotExist, exceptions.NotAuthorizedException, exceptions.UserNotFoundException):
             return Response({
                 'error': 'invalid_credentials',

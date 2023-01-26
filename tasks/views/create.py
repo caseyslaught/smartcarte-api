@@ -25,13 +25,10 @@ class CreateForestChangeTaskView(generics.GenericAPIView):
         end_date = data['end_date']
         region_uid = data['region_uid']
 
-        print(start_date, end_date)
-
         try:
             region = Region.objects.get(uid=region_uid)
         except  Region.DoesNotExist:
             return Response({'error': 'region_not_found'}, status=status.HTTP_400_BAD_REQUEST)
-
 
         task = ForestChangeTask.objects.create(
             type=TASK_TYPE_FOREST_CHANGE,
