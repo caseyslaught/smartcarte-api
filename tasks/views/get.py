@@ -1,13 +1,34 @@
 from django.core.exceptions import ValidationError
 import json
 from rest_framework import permissions, status, generics
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from SmartCarteApi.common.authentication import CognitoAuthentication
 from tasks.serializers import create as serializer
 
-from tasks.models import ForestChangeTask
+from tasks.models import DemoLandcoverClassificationTask, ForestChangeTask
 from tasks.serializers import get as serializers
+
+
+class GetDemoClassificationTaskView(generics.RetrieveAPIView):
+
+    authentication_classes = []
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.GetDemoClassificationTaskSerializer
+
+    def get_object(self):
+        task_uid = self.kwargs['task_uid']
+
+        try:
+            task = DemoLandcoverClassificationTask.objects.get(uid=task_uid)
+        except (DemoLandcoverClassificationTask.DoesNotExist, ValidationError):
+            raise NotFound(detail={'error': 'task_not_found'}, code=status.HTTP_400_BAD_REQUEST)
+
+        print(task_uid)
+        return task
+
+
 
 
 class GetForestChangeTaskInfoView(generics.GenericAPIView):

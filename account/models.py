@@ -84,6 +84,20 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+
+class DemoUser(models.Model):
+
+    uid = models.UUIDField(unique=True, editable=False, default=uuid.uuid4)
+    datetime_created = models.DateTimeField(default=get_utc_datetime_now)
+    datetime_deleted = models.DateTimeField(null=True)
+
+    # tracking ID that is created by frontend and passed to backend
+    # not using UUIDField because format may change
+    tid = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.tid
 
 
 class Region(models.Model):
@@ -105,6 +119,9 @@ class Region(models.Model):
 class Waitlist(models.Model):
     uid = models.UUIDField(unique=True, editable=False, default=uuid.uuid4)
     datetime_created = models.DateTimeField(default=get_utc_datetime_now)
+
+    # if demo_user is not null, then signup if from demo not form
+    demo_user = models.ForeignKey(DemoUser, on_delete=models.CASCADE, related_name='waitlist_signups', null=True)
 
     first_name = models.CharField(max_length=200, blank=True, null=True)
     last_name = models.CharField(max_length=200, blank=True, null=True)

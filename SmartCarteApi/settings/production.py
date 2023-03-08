@@ -10,6 +10,8 @@ COGNITO_APP_ID = os.environ['SMARTCARTE_PROD_COGNITO_APP_ID']
 # Django
 
 ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
     'api.smartcarte.earth',
     'production.eba-kapt8bmu.us-west-2.elasticbeanstalk.com'
 ]

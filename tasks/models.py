@@ -2,7 +2,7 @@ from pyexpat import model
 from django.db import models
 import uuid
 
-from account.models import Account, Organization, Region
+from account.models import Account, DemoUser, Organization, Region
 from SmartCarteApi.common import get_utc_datetime_now
 
 
@@ -13,12 +13,28 @@ class BaseTask(models.Model):
     datetime_completed = models.DateTimeField(null=True)
     datetime_updated = models.DateTimeField(null=True)
 
-    type = models.CharField(max_length=40, null=True) # burn_areas, forest_change, lulc_change, lulc_classification
-    status = models.CharField(max_length=20)  
+    type = models.CharField(max_length=40, null=True) # demo_classification, burn_areas, forest_change, lulc_change, lulc_classification
+    status = models.CharField(max_length=50)  
     status_message = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         abstract = True
+
+
+class DemoLandcoverClassificationTask(BaseTask):
+
+    # parameters
+    date = models.DateField()
+    region_geojson = models.TextField()
+    email = models.EmailField(null=True, blank=True)
+    demo_user = models.ForeignKey(DemoUser, on_delete=models.CASCADE, related_name='demo_classification_tasks', null=True)
+
+    # results
+    statistics_json = models.TextField() # summary of results in JSON format
+    imagery_tif_href = models.CharField(max_length=240, null=True, blank=True)
+    imagery_tiles_href = models.CharField(max_length=240, null=True, blank=True)
+    landcover_tif_href = models.CharField(max_length=240, null=True, blank=True)
+    landcover_tiles_href = models.CharField(max_length=240, null=True, blank=True)
 
 
 class ForestChangeTask(BaseTask):
