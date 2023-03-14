@@ -15,6 +15,8 @@ notes.txt
 cheatsheet.txt
 .~lock*
 
+test.json
+
 ### large data files ###
 investment_tracking*.csv
 exports_*

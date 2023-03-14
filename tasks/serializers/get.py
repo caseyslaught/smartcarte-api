@@ -18,14 +18,13 @@ class GetDemoClassificationTaskSerializer(serializers.ModelSerializer):
             'type',
             'status',
             'status_message',
+            'status_long_message',
             'statistics_json',
             'imagery_tif_href',
             'imagery_tiles_href',
             'landcover_tif_href',
             'landcover_tiles_href',
         ]
-
-
 
 
 class GetForestChangeTaskParamsSerializer(serializers.ModelSerializer):    

@@ -14,8 +14,9 @@ class BaseTask(models.Model):
     datetime_updated = models.DateTimeField(null=True)
 
     type = models.CharField(max_length=40, null=True) # demo_classification, burn_areas, forest_change, lulc_change, lulc_classification
-    status = models.CharField(max_length=50)  
+    status = models.CharField(max_length=50) # pending, running, complete, failed
     status_message = models.CharField(max_length=200, null=True, blank=True)
+    status_long_message = models.TextField(null=True, blank=True)
 
     class Meta:
         abstract = True

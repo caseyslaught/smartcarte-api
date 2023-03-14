@@ -18,6 +18,7 @@ class GetDemoClassificationTaskView(generics.RetrieveAPIView):
     serializer_class = serializers.GetDemoClassificationTaskSerializer
 
     def get_object(self):
+        
         task_uid = self.kwargs['task_uid']
 
         try:
@@ -25,10 +26,7 @@ class GetDemoClassificationTaskView(generics.RetrieveAPIView):
         except (DemoLandcoverClassificationTask.DoesNotExist, ValidationError):
             raise NotFound(detail={'error': 'task_not_found'}, code=status.HTTP_400_BAD_REQUEST)
 
-        print(task_uid)
         return task
-
-
 
 
 class GetForestChangeTaskInfoView(generics.GenericAPIView):
