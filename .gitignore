@@ -16,6 +16,7 @@ cheatsheet.txt
 .~lock*
 
 test.json
+testStatistics.json
 
 ### large data files ###
 investment_tracking*.csv

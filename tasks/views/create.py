@@ -27,6 +27,8 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
         add_to_waitlist = data['add_to_waitlist']
         tid = data['tid']
 
+        print(data)
+
         if date < parser.parse('2019-01-01'):
             return Response({
                 'error': 'invalid_date', 
@@ -52,11 +54,12 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
         task = DemoLandcoverClassificationTask.objects.create(
             type="demo_classification",
             status="pending", # pending, running, complete, failed (informs status bars)
-            status_message="Starting task", # more detailed message
+            status_message="Starting task",
             date=date,
             email=email,
             region_geojson=region_geojson,
             demo_user=demo_user,
+            statistics_json=""
         )
 
         # run_fargate_monolith_task(task)

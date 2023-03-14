@@ -31,7 +31,7 @@ class DemoLandcoverClassificationTask(BaseTask):
     demo_user = models.ForeignKey(DemoUser, on_delete=models.CASCADE, related_name='demo_classification_tasks', null=True)
 
     # results
-    statistics_json = models.TextField() # summary of results in JSON format
+    statistics_json = models.TextField(null=True, blank=True) # summary of results in JSON format
     imagery_tif_href = models.CharField(max_length=240, null=True, blank=True)
     imagery_tiles_href = models.CharField(max_length=240, null=True, blank=True)
     landcover_tif_href = models.CharField(max_length=240, null=True, blank=True)
