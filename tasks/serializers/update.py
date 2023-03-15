@@ -9,6 +9,23 @@ class UpdateTaskStatusSerializer(serializers.Serializer):
     task_type = serializers.CharField()
     status = serializers.ChoiceField(choices=TASK_STATUSES)
     message = serializers.CharField(required=False, allow_null=True) # allow_null makes serializer output default None if not specified
+    long_message = serializers.CharField(required=False, allow_null=True) 
+
+    def validate(self, attrs):
+        unknown =  set(self.initial_data) - set(self.fields)
+        if unknown:
+            raise serializers.ValidationError(f'Unknown field(s): {", ".join(unknown)}')
+        return attrs
+
+
+class UpdateDemoTaskSerializer(serializers.Serializer):
+
+    task_uid = serializers.UUIDField()
+    statistics_json = serializers.JSONField(required=False)
+    imagery_tif_href = serializers.URLField(required=False)
+    imagery_tiles_href = serializers.URLField(required=False)
+    landcover_tif_href = serializers.URLField(required=False)
+    landcover_tiles_href = serializers.URLField(required=False)
 
     def validate(self, attrs):
         unknown =  set(self.initial_data) - set(self.fields)
