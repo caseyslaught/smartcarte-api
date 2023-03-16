@@ -1,3 +1,4 @@
+import json
 from rest_framework import permissions, status, generics
 from rest_framework.response import Response
 
@@ -27,8 +28,11 @@ class UpdateDemoClassificationTaskView(generics.GenericAPIView):
             task = DemoLandcoverClassificationTask.objects.get(uid=task_uid)
         except DemoLandcoverClassificationTask.DoesNotExist:
             return Response({'error': 'task_not_found'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        statistics_json = data.get('statistics_json', task.statistics_json)
+        statistics_json = json.dumps(statistics_json)
 
-        task.statistics_json = data.get('statistics_json', task.statistics_json)
+        task.statistics_json = statistics_json
         task.imagery_tif_href = data.get('imagery_tif_href', task.imagery_tif_href)
         task.imagery_tiles_href = data.get('imagery_tiles_href', task.imagery_tiles_href)
         task.landcover_tif_href = data.get('landcover_tif_href', task.landcover_tif_href)

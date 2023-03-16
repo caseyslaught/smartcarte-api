@@ -9,6 +9,13 @@ class GetDemoClassificationTaskSerializer(serializers.ModelSerializer):
     region_geojson = serializers.SerializerMethodField()
     def get_region_geojson(self, task):
         return json.loads(task.region_geojson)
+    
+    statistics_json = serializers.SerializerMethodField()
+    def get_statistics_json(self, task):
+        try:
+            return json.loads(task.statistics_json)
+        except json.decoder.JSONDecodeError:
+            return None
 
     class Meta:
         model = DemoLandcoverClassificationTask
