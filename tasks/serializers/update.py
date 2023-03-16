@@ -26,6 +26,7 @@ class UpdateDemoTaskSerializer(serializers.Serializer):
     imagery_tiles_href = serializers.URLField(required=False)
     landcover_tif_href = serializers.URLField(required=False)
     landcover_tiles_href = serializers.URLField(required=False)
+    rgb_tif_href = serializers.URLField(required=False)
 
     def validate(self, attrs):
         unknown =  set(self.initial_data) - set(self.fields)

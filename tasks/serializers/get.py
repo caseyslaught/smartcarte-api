@@ -1,7 +1,6 @@
 import json
 from rest_framework import serializers
 
-from account.serializers.account import GetRegionSerializer
 from tasks.models import DemoLandcoverClassificationTask, ForestChangeTask
 
 
@@ -29,6 +28,7 @@ class GetDemoClassificationTaskSerializer(serializers.ModelSerializer):
             'imagery_tiles_href',
             'landcover_tif_href',
             'landcover_tiles_href',
+            'rgb_tif_href',
         ]
 
 

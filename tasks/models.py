@@ -36,6 +36,7 @@ class DemoLandcoverClassificationTask(BaseTask):
     imagery_tiles_href = models.CharField(max_length=240, null=True, blank=True)
     landcover_tif_href = models.CharField(max_length=240, null=True, blank=True)
     landcover_tiles_href = models.CharField(max_length=240, null=True, blank=True)
+    rgb_tif_href = models.CharField(max_length=240, null=True, blank=True)
 
 
 class ForestChangeTask(BaseTask):

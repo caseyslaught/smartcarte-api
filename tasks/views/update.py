@@ -33,6 +33,7 @@ class UpdateDemoClassificationTaskView(generics.GenericAPIView):
         task.imagery_tiles_href = data.get('imagery_tiles_href', task.imagery_tiles_href)
         task.landcover_tif_href = data.get('landcover_tif_href', task.landcover_tif_href)
         task.landcover_tiles_href = data.get('landcover_tiles_href', task.landcover_tiles_href)
+        task.rgb_tif_href = data.get('rgb_tif_href', task.rgb_tif_href)
         task.save()
 
         return Response(status=status.HTTP_200_OK)
