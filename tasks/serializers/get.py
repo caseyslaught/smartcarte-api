@@ -1,3 +1,4 @@
+import json
 from rest_framework import serializers
 
 from account.serializers.account import GetRegionSerializer
@@ -5,6 +6,10 @@ from tasks.models import DemoLandcoverClassificationTask, ForestChangeTask
 
 
 class GetDemoClassificationTaskSerializer(serializers.ModelSerializer):
+
+    region_geojson = serializers.SerializerMethodField()
+    def get_region_geojson(self, task):
+        return json.loads(task.region_geojson)
 
     class Meta:
         model = DemoLandcoverClassificationTask
