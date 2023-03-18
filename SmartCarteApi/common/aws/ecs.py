@@ -41,5 +41,7 @@ def run_fargate_monolith_task(task):
         taskDefinition=os.environ['FARGATE_MONOLITH_TASK_DEFINITION_NAME'],
     )
 
+    print(response)
+
     return response
 

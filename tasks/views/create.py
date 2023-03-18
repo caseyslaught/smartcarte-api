@@ -27,7 +27,7 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
         add_to_waitlist = data['add_to_waitlist']
         tid = data['tid']
 
-        print(data)
+        print(data)            
 
         if date < parser.parse('2019-01-01'):
             return Response({
@@ -36,13 +36,22 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
                 status=status.HTTP_400_BAD_REQUEST)
         
         # TODO: validate geojson?
-        # TODO: add some rate limiting (only one oending/running task per user)
 
         try:
             demo_user = DemoUser.objects.get(tid=tid)
         except DemoUser.DoesNotExist:
             demo_user = DemoUser.objects.create(tid=tid)
-            
+
+        """
+        old_tasks = DemoLandcoverClassificationTask.objects.filter(demo_user=demo_user, status__in=['pending', 'running'])            
+        if len(old_tasks) > 0:
+            return Response({
+                'error': 'task_limit', 
+                'message': 'You can only have one running task at a time. Please wait for the other one to finish before starting a new one.',
+                'current_task_uids': [t.uid for t in old_tasks]
+            }, status=status.HTTP_400_BAD_REQUEST)
+        """
+
         # only add to waitlist if demo user hasn't already added this email
         if add_to_waitlist:
             try:
@@ -53,7 +62,7 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
 
         task = DemoLandcoverClassificationTask.objects.create(
             type="demo_classification",
-            status="pending", # pending, running, complete, failed (informs status bars)
+            status="pending",
             status_message="Starting task",
             date=date,
             email=email,
@@ -62,7 +71,14 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
             statistics_json=""
         )
 
-        # run_fargate_monolith_task(task)
+        fargate_res = run_fargate_monolith_task(task)
+
+        if len(fargate_res['failures']) > 0:
+            task.delete()
+            return Response({
+                'error': 'fargate_error', 
+                'message': 'Our servers have reached capacity. Please try again later.',
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'task_uid': task.uid}, status=status.HTTP_201_CREATED)
 
