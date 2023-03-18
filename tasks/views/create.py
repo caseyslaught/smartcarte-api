@@ -73,7 +73,7 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
 
         fargate_res = run_fargate_monolith_task(task)
 
-        if len(fargate_res['failures']) > 0:
+        if len(fargate_res.get('failures', [])) > 0:
             task.delete()
             return Response({
                 'error': 'fargate_error', 
