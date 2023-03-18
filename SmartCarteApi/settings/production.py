@@ -1,5 +1,6 @@
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import ignore_logger
 
 from SmartCarteApi.settings.base import *
 
@@ -47,4 +48,5 @@ sentry_sdk.init(
     traces_sample_rate=0.01,
     send_default_pii=False
 )
+ignore_logger("django.security.DisallowedHost")
 

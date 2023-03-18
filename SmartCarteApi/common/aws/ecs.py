@@ -15,7 +15,7 @@ def run_fargate_monolith_task(task):
         networkConfiguration={
             'awsvpcConfiguration': {
                 'assignPublicIp': 'ENABLED',
-                'securityGroups': [os.environ['FARGATE_MONOLITH_SECURITY_GROUP']],
+                'securityGroups': [os.environ['FARGATE_MONOLITH_SECURITY_GROUP']], # stored in .env
                 'subnets': [
                     os.environ['FARGATE_SUBNET_ID1'],
                     os.environ['FARGATE_SUBNET_ID2'],
