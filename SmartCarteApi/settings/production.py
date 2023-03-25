@@ -40,10 +40,10 @@ DATABASES = {
 
 # Sentry
 
-SENTRY_PROJECT_ID = os.environ['SMARTCARTE_SENTRY_PROJECT_ID']
+SENTRY_API_PROJECT_ID = os.environ['SMARTCARTE_SENTRY_API_PROJECT_ID']
 
 sentry_sdk.init(
-    dsn=f"https://b600ddba30304e76ad027d33c43d5ced@o4504860083224576.ingest.sentry.io/{SENTRY_PROJECT_ID}",
+    dsn=f"https://b600ddba30304e76ad027d33c43d5ced@o4504860083224576.ingest.sentry.io/{SENTRY_API_PROJECT_ID}",
     integrations=[DjangoIntegration()],
     traces_sample_rate=0.01,
     send_default_pii=False

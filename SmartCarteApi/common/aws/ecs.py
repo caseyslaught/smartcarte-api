@@ -1,3 +1,4 @@
+from django.conf import settings
 import os
 
 from SmartCarteApi.common.aws import get_boto_client
@@ -26,6 +27,10 @@ def run_fargate_monolith_task(task):
             'containerOverrides': [{
                 'name': 'sc-monolith',
                 'environment': [
+                    {
+                        'name': 'SENTRY_MONOLITH_PROJECT_ID',
+                        'value': settings.SENTRY_MONOLITH_PROJECT_ID
+                    },
                     {
                         'name': 'TASK_UID',
                         'value': str(task.uid)
