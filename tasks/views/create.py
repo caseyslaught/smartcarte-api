@@ -1,6 +1,7 @@
-from datetime import datetime as dt
 from dateutil import parser
-from rest_framework import permissions, status, generics, views
+from django.db.models import Q
+import json
+from rest_framework import permissions, status, generics
 from rest_framework.response import Response
 
 from account.models import DemoUser, Region, Waitlist
@@ -12,6 +13,7 @@ from tasks.serializers import create as serializers
 
 
 class CreateDemoClassificationTaskView(generics.GenericAPIView):
+
     authentication_classes = []
     permission_classes = [permissions.AllowAny]
     serializer_class = serializers.CreateDemoClassificationTaskSerializer
@@ -27,7 +29,7 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
         add_to_waitlist = data['add_to_waitlist']
         tid = data['tid']
 
-        print(data)            
+        print(data)
 
         if date < parser.parse('2019-01-01'):
             return Response({
@@ -35,22 +37,35 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
                 'message': 'imagery is available from January 2019'}, 
                 status=status.HTTP_400_BAD_REQUEST)
         
-        # TODO: validate geojson?
+        # purposely validating manually instead of using serializer
+        try:
+            geojson = json.loads(region_geojson)
+        except json.decoder.JSONDecodeError:
+            return Response({
+                'error': 'invalid_geojson', 
+                'message': 'invalid geojson format'}, 
+                status=status.HTTP_400_BAD_REQUEST)
+        
+        # check if geometry and coordinate exist
+        if 'geometry' not in geojson or 'coordinates' not in geojson['geometry']:
+            return Response({
+                'error': 'invalid_geojson', 
+                'message': 'geometry or coordinates not found in geojson object'}, 
+                status=status.HTTP_400_BAD_REQUEST)
 
         try:
             demo_user = DemoUser.objects.get(tid=tid)
         except DemoUser.DoesNotExist:
             demo_user = DemoUser.objects.create(tid=tid)
 
-        """
-        old_tasks = DemoLandcoverClassificationTask.objects.filter(demo_user=demo_user, status__in=['pending', 'running'])            
+        # only allow one task at a time
+        old_tasks = DemoLandcoverClassificationTask.objects.filter(Q(demo_user=demo_user) | Q(email=email), status__in=['pending', 'running'])
         if len(old_tasks) > 0:
             return Response({
                 'error': 'task_limit', 
                 'message': 'You can only have one running task at a time. Please wait for the other one to finish before starting a new one.',
                 'current_task_uids': [t.uid for t in old_tasks]
             }, status=status.HTTP_400_BAD_REQUEST)
-        """
 
         # only add to waitlist if demo user hasn't already added this email
         if add_to_waitlist:
@@ -81,7 +96,6 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'task_uid': task.uid}, status=status.HTTP_201_CREATED)
-
 
 
 class CreateForestChangeTaskView(generics.GenericAPIView):
