@@ -31,7 +31,7 @@ class CreateDemoClassificationTaskView(generics.GenericAPIView):
 
         print(data)
 
-        if date < parser.parse('2019-01-01'):
+        if date < parser.parse('2017-01-01'):
             return Response({
                 'error': 'invalid_date', 
                 'message': 'imagery is available from January 2019'}, 
