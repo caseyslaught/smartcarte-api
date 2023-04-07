@@ -23,6 +23,9 @@ class BaseTask(models.Model):
 
 class DemoLandcoverClassificationTask(BaseTask):
 
+    # misc
+    slug = models.CharField(max_length=40, null=True, blank=True, unique=True)
+
     # parameters
     date = models.DateField()
     region_geojson = models.TextField()

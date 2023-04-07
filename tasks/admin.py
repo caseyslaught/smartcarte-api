@@ -5,7 +5,7 @@ from tasks.models import DemoLandcoverClassificationTask, ForestChangeTask
 
 @admin.register(DemoLandcoverClassificationTask)
 class DemoLandcoverClassificationTaskAdmin(admin.ModelAdmin):
-    list_display = ['uid', 'datetime_created', 'status', 'status_message']
+    list_display = ['uid', 'datetime_created', 'status', 'status_message', 'slug']
     search_fields = []
     list_filter = []
     ordering = ['-datetime_created']

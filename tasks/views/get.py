@@ -3,6 +3,7 @@ import json
 from rest_framework import permissions, status, generics
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
+import uuid
 
 from SmartCarteApi.common.authentication import CognitoAuthentication
 from tasks.serializers import create as serializer
@@ -19,12 +20,20 @@ class GetDemoClassificationTaskView(generics.RetrieveAPIView):
 
     def get_object(self):
         
-        task_uid = self.kwargs['task_uid']
+        task_id = self.kwargs['task_id']
 
         try:
-            task = DemoLandcoverClassificationTask.objects.get(uid=task_uid)
-        except (DemoLandcoverClassificationTask.DoesNotExist, ValidationError):
-            raise NotFound(detail={'error': 'task_not_found'}, code=status.HTTP_400_BAD_REQUEST)
+            uuid.UUID(task_id, version=4)
+            try:
+                task = DemoLandcoverClassificationTask.objects.get(uid=task_id)
+            except (DemoLandcoverClassificationTask.DoesNotExist, ValidationError):
+                raise NotFound(detail={'error': 'task_not_found'}, code=status.HTTP_400_BAD_REQUEST)
+        except ValueError:
+            slug = task_id
+            try:
+                task = DemoLandcoverClassificationTask.objects.get(slug=slug)
+            except (DemoLandcoverClassificationTask.DoesNotExist, ValidationError):
+                raise NotFound(detail={'error': 'task_not_found'}, code=status.HTTP_400_BAD_REQUEST)
 
         return task
 

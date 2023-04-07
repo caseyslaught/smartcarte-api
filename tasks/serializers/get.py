@@ -23,6 +23,7 @@ class GetDemoClassificationTaskSerializer(serializers.ModelSerializer):
         fields = [
             'uid',
             'datetime_created',
+            'slug',
             'date',
             'email',
             'region_geojson',
